@@ -11,7 +11,7 @@ Web version for desktop app, for making label for images
 
 ## Ссылка на проект
 
-Ссылка на проект: 
+Ссылка на проект: https://webdevartur.github.io/melanoma_features
 
 ## Инструкции по началу работы
 
