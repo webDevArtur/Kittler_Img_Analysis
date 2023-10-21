@@ -1,0 +1,86 @@
+/* Общие стили */
+header {
+    width: 100%;
+    background-color: #ffffff;
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    color: #fff;
+    padding: 10px 40px;
+}
+
+.label {
+    height: 5em;
+    margin-right: 20px;
+    transition: transform 1s ease-in-out;
+}
+
+.label:hover {
+    transform: scale(1.05);
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: left; /* Выравниваем элементы по левому краю */
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 2em; /* Уменьшаем отступ для маленьких экранов */
+    font-size: 1em;
+}
+
+nav ul li:last-child {
+    margin-right: 0;
+}
+
+nav ul li a {
+    font-size: 1.5em;
+    color: rgb(32, 178, 255);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
+    text-align: left; /* Выравниваем текст по левому краю */
+}
+
+nav ul li a:hover {
+    color: #0056b3;
+    text-shadow: 4px 4px 6px rgba(0, 0, 0, 0.6);
+}
+
+/* Медиа-запрос для экранов шириной менее 1100 пикселей */
+@media screen and (max-width: 1100px) {
+    nav {
+        display: block;
+    }
+
+    nav ul {
+        text-align: center; /* Выравниваем элементы по левому краю */
+    }
+}
+
+/* Медиа-запрос для экранов шириной менее 715 пикселей */
+@media screen and (max-width: 715px) {
+    nav {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    nav ul {
+        text-align: center;
+    }
+
+    nav ul li {
+        display: block;
+        margin: 10px 0;
+    }
+}
