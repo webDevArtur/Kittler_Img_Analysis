@@ -11,10 +11,10 @@ function Header() {
 
 
                         <ul>
-                            <li><a href="/">Главная</a></li>
-                            <li><a href="/about">Информация</a></li>
-                            <li><a href="/classifier">Классификатор</a></li>
-                            <li><a href="/contact">Контакты</a></li>
+                            <li><a href="">Главная</a></li>
+                            <li><a href="">Информация</a></li>
+                            <li><a href="">Классификатор</a></li>
+                            <li><a href="">Контакты</a></li>
                         </ul>
                     </nav>
         </header>
