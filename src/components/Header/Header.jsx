@@ -6,9 +6,9 @@ function Header() {
         <header>
                     <nav>
 
-                        <a href="/">
-                            <img src="/images/icon.png" alt="НИЯУ МИФИ" className={styles.label}/>
-                        </a>
+
+                        <div className={styles.label}>KITTLERSKINTECH</div>
+
 
                         <ul>
                             <li><a href="/">Главная</a></li>

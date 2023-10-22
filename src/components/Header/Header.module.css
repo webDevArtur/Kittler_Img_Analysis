@@ -17,9 +17,12 @@ nav {
 }
 
 .label {
-    height: 5em;
-    margin-right: 20px;
-    transition: transform 1s ease-in-out;
+    font-size: 1.5em;
+    color: rgb(32, 178, 255);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
+    text-align: left; /* Выравниваем текст по левому краю */
 }
 
 .label:hover {

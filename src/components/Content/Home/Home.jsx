@@ -16,7 +16,7 @@ function Home() {
                         Наша миссия - сделать процесс диагностики кожных заболеваний более доступным, точным и эффективным. Мы верим, что технологии и медицина могут объединиться, чтобы спасти жизни и улучшить качество жизни пациентов.
                     </p>
 
-                    <img  src="/images/home.jpg" alt="medicine_and_tech" className={styles.image}/>
+                    <img src="/home.jpg" alt="medicine_and_tech" className={styles.image}/>
 
                     <div className={styles.container_more}>
                         <a className={styles.more} href="/about">Подробнее</a>
