@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Kittler_Img_Analysis/static/css/main.49cad461.css",
+    "main.js": "/Kittler_Img_Analysis/static/js/main.55f64dc7.js",
+    "static/js/787.4b790fe1.chunk.js": "/Kittler_Img_Analysis/static/js/787.4b790fe1.chunk.js",
+    "index.html": "/Kittler_Img_Analysis/index.html",
+    "main.49cad461.css.map": "/Kittler_Img_Analysis/static/css/main.49cad461.css.map",
+    "main.55f64dc7.js.map": "/Kittler_Img_Analysis/static/js/main.55f64dc7.js.map",
+    "787.4b790fe1.chunk.js.map": "/Kittler_Img_Analysis/static/js/787.4b790fe1.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.49cad461.css",
+    "static/js/main.55f64dc7.js"
+  ]
+}
