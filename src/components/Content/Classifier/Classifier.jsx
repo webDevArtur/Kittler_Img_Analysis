@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './Classifier.module.css';
 import Layout from '../../Layout/Layout';
-import { Select, Input, Button } from 'antd';
+import { Select } from 'antd';
 
 const { Option } = Select;
 
@@ -149,58 +149,62 @@ const featuresData = {
 };
 
 
-function FeatureSelector({ data, onSelect, depth, selectedFeatures }) {
-    const [selectedFeature, setSelectedFeature] = useState(null);
-
+const FeatureSelector = ({ data, onSelect, depth, selectedFeatures }) => {
+    const selectedFeature = selectedFeatures[depth];
     const handleFeatureChange = (value) => {
-        setSelectedFeature(value);
         onSelect(depth, value);
     };
 
-    const isLeafNode = Array.isArray(data);
-
     return (
         <div className={styles.featureSelector}>
-            {isLeafNode ? (
-                <Select
-                    style={{ width: 200 }}
-                    placeholder="Выберите диагноз"
-                    onChange={(value) => onSelect(depth, value)}
-                >
-                    {data.map((diagnosis, index) => (
-                        <Option key={index} value={diagnosis}>
-                            {diagnosis}
-                        </Option>
-                    ))}
-                </Select>
-            ) : (
-                <div>
+            {Array.isArray(data) ? (
+                data.length > 0 && (
                     <Select
                         style={{ width: 200 }}
-                        placeholder="Выберите признак"
-                        onChange={handleFeatureChange}
+                        placeholder="Выберите диагноз"
+                        value={selectedFeature}
+                        onChange={(value) => handleFeatureChange(value)}
                     >
-                        {Object.keys(data).map((feature) => (
-                            <Option key={feature} value={feature}>
-                                {feature}
+                        {data.map((diagnosis, index) => (
+                            <Option key={index} value={diagnosis}>
+                                {diagnosis}
                             </Option>
                         ))}
                     </Select>
-                    {selectedFeature && data[selectedFeature] && !isEmpty(data[selectedFeature]) && (
-                        <FeatureSelector
-                            data={data[selectedFeature]}
-                            onSelect={onSelect}
-                            depth={depth + 1}
-                            selectedFeatures={selectedFeatures}
-                        />
-                    )}
-                </div>
+                )
+            ) : (
+                Object.keys(data).length > 0 && (
+                    <div>
+                        <Select
+                            style={{ width: 200 }}
+                            placeholder="Выберите признак"
+                            value={selectedFeature}
+                            onChange={handleFeatureChange}
+                        >
+                            {Object.keys(data).map((feature) => (
+                                <Option key={feature} value={feature}>
+                                    {feature}
+                                </Option>
+                            ))}
+                        </Select>
+                        {selectedFeature && data[selectedFeature] && (
+                            <FeatureSelector
+                                data={data[selectedFeature]}
+                                onSelect={onSelect}
+                                depth={depth + 1}
+                                selectedFeatures={selectedFeatures}
+                            />
+                        )}
+                    </div>
+                )
             )}
         </div>
     );
-}
+};
 
-// Вспомогательная функция для проверки объекта на пустоту
+
+
+
 function isEmpty(obj) {
     for (var key in obj) {
         if (obj.hasOwnProperty(key)) return false;
@@ -209,15 +213,39 @@ function isEmpty(obj) {
 }
 
 function Classifier() {
-    const [selectedFeatures, setSelectedFeatures] = useState(new Array(4).fill(null));
+    const [selectedFeatures, setSelectedFeatures] = useState([null, null, null, null]);
     const [selectedImage, setSelectedImage] = useState(null);
+    const [alert, setAlert] = useState(null);
+
+
+    function addAlert(message, type) {
+        setAlert({ message, type });
+    }
+
+
+    function Alert({ message, type }) {
+        return (
+            <div className={`${styles.alert} ${type === 'success' ? styles.success : ''}`}>
+                {message}
+            </div>
+        );
+    }
 
     const handleFeatureSelect = (depth, value) => {
-        // Обработка выбора параметра
-        const updatedSelectedFeatures = selectedFeatures.slice(0, depth);
+        // Создаем новый массив для обновления состояния selectedFeatures
+        const updatedSelectedFeatures = selectedFeatures.slice(0, depth + 1);
         updatedSelectedFeatures[depth] = value;
+
+        // Обнуляем значения для всех select ниже
+        for (let i = depth + 1; i < selectedFeatures.length; i++) {
+            updatedSelectedFeatures[i] = null;
+        }
+
         setSelectedFeatures(updatedSelectedFeatures);
     };
+
+
+
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
@@ -225,16 +253,55 @@ function Classifier() {
             const reader = new FileReader();
             reader.onload = (e) => setSelectedImage(e.target.result);
             reader.readAsDataURL(file);
+        } else {
+            setSelectedImage(null); // Clear the image if no file is selected
         }
     };
 
+
     const handleFeatureRemove = (depth) => {
         const updatedSelectedFeatures = selectedFeatures.slice(0, depth);
-        updatedSelectedFeatures[depth] = null;
         setSelectedFeatures(updatedSelectedFeatures);
-    };
+    }
 
     const sendSelectedFeaturesToServer = () => {
+
+        if (!selectedImage) {
+            addAlert('Загрузите изображение перед отправкой на сервер', 'error');
+            return; // Prevent further execution
+        }
+
+        if (selectedFeatures.length === 0) {
+            addAlert('Выберите признаки во всех уровнях перед отправкой на сервер', 'error');
+            return; // Prevent further execution
+        }
+
+        const isAllFeaturesSelected = (data, selectedFeatures, depth) => {
+            if (depth >= selectedFeatures.length) {
+                return true; // Прекращаем рекурсию, если depth больше или равно длине selectedFeatures
+            }
+
+            const currentFeature = selectedFeatures[depth];
+
+            if (currentFeature === null || data[currentFeature] === undefined) {
+                // Проверка на null или undefined, чтобы избежать ошибок
+                return false;
+            }
+
+            if (depth === selectedFeatures.length - 1) {
+                // Check if we are at the last depth
+                return isEmpty(data[currentFeature]);
+            } else {
+                // Recursively check all levels
+                return isAllFeaturesSelected(data[currentFeature], selectedFeatures, depth + 1);
+            }
+        };
+
+        if (!isAllFeaturesSelected(featuresData, selectedFeatures, 0)) {
+            addAlert('Выберите признаки во всех уровнях перед отправкой на сервер', 'error');
+            return; // Prevent further execution
+        }
+
         const selectedFeaturesData = {
             selectedFeatures,
             selectedImage,
@@ -249,16 +316,15 @@ function Classifier() {
         })
             .then((response) => {
                 if (response.ok) {
-                    alert('Данные успешно отправлены на сервер');
+                    addAlert('Данные успешно отправлены на сервер', 'success');
                 } else {
-                    alert('Ошибка при отправке данных на сервер');
+                    addAlert('Ошибка при отправке данных на сервер, проверьте подключение к интернету', 'error');
                 }
             })
             .catch((error) => {
-                alert('Произошла ошибка при отправке данных:', error);
+                addAlert(`Произошла ошибка при отправке данных: ${error}`, 'error');
             });
     };
-
 
 
     return (
@@ -303,6 +369,15 @@ function Classifier() {
                             </ul>
                         </div>
                     </div>
+
+                    <h2>Состояние запроса:</h2>
+
+                    <ul className={styles.listContainer}>
+                        {alert && (
+                            <Alert message={alert.message} type={alert.type} />
+                        )}
+                    </ul>
+
                     <button onClick={sendSelectedFeaturesToServer} className={styles.but} >Отправить на сервер</button>
                 </section>
             </main>
