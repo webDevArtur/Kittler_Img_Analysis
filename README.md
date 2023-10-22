@@ -8,7 +8,7 @@
 
 ## Ссылка на проект
 
-Ссылка на проект: https://webdevartur.github.io/Kittler_Img_Analysis
+Ссылка на страницу сайта, отвечающую за классификацию: https://webdevartur.github.io/Kittler_Img_Analysis
 
 ## Инструкции по началу работы
 
