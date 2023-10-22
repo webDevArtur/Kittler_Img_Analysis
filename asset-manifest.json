@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/Kittler_Img_Analysis/static/css/main.49cad461.css",
-    "main.js": "/Kittler_Img_Analysis/static/js/main.9f1fa601.js",
+    "main.css": "/Kittler_Img_Analysis/static/css/main.a246817f.css",
+    "main.js": "/Kittler_Img_Analysis/static/js/main.aa72508c.js",
     "static/js/787.4b790fe1.chunk.js": "/Kittler_Img_Analysis/static/js/787.4b790fe1.chunk.js",
     "index.html": "/Kittler_Img_Analysis/index.html",
-    "main.49cad461.css.map": "/Kittler_Img_Analysis/static/css/main.49cad461.css.map",
-    "main.9f1fa601.js.map": "/Kittler_Img_Analysis/static/js/main.9f1fa601.js.map",
+    "main.a246817f.css.map": "/Kittler_Img_Analysis/static/css/main.a246817f.css.map",
+    "main.aa72508c.js.map": "/Kittler_Img_Analysis/static/js/main.aa72508c.js.map",
     "787.4b790fe1.chunk.js.map": "/Kittler_Img_Analysis/static/js/787.4b790fe1.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.49cad461.css",
-    "static/js/main.9f1fa601.js"
+    "static/css/main.a246817f.css",
+    "static/js/main.aa72508c.js"
   ]
 }
