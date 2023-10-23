@@ -141,7 +141,7 @@ const featuresData = {
         },
         'Точки': {
             'Серые': {'Себорейный кератоз': {}, 'Актинический кератоз (предрак)': {}, 'Болезнь Боуэна (предрак)': {}, 'Меланома': {}, 'Базальноклеточная карцинома': {}},
-            'Синии': {'Базальноклеточная карцинома': {}},
+            'Синие': {'Базальноклеточная карцинома': {}},
             'Черные': {'Меланома': {}, 'Меланоцитарный невус': {}},
             'Коричневые': {'Меланоцитарный невус': {}, 'Себорейный кератоз': {}, 'Болезнь Боуэна (предрак)': {}},
         },
@@ -212,18 +212,21 @@ function isEmpty(obj) {
     return true;
 }
 
+
 function Classifier() {
     const [selectedFeatures, setSelectedFeatures] = useState([null, null, null, null]);
     const [selectedImage, setSelectedImage] = useState(null);
     const [alert, setAlert] = useState(null);
+    const [imageList, setImageList] = useState([]); // Список изображений
+    const [selectedImageIndex, setSelectedImageIndex] = useState(null); // Индекс выбранного изображения
 
 
     function addAlert(message, type) {
-        setAlert({ message, type });
+        setAlert({message, type});
     }
 
 
-    function Alert({ message, type }) {
+    function Alert({message, type}) {
         return (
             <div className={`${styles.alert} ${type === 'success' ? styles.success : ''}`}>
                 {message}
@@ -245,17 +248,18 @@ function Classifier() {
     };
 
 
+    const handleImageUpload = (e) => {
+        const files = Array.from(e.target.files); // Массив файлов
+        const newImages = files.map((file) => ({
+            src: URL.createObjectURL(file),
+            name: file.name,
+        }));
+        setImageList([...imageList, ...newImages]);
+    };
 
-
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => setSelectedImage(e.target.result);
-            reader.readAsDataURL(file);
-        } else {
-            setSelectedImage(null); // Clear the image if no file is selected
-        }
+    const handleImageChange = (index) => {
+        setSelectedImageIndex(index);
+        setSelectedImage(imageList[index].src);
     };
 
 
@@ -304,7 +308,7 @@ function Classifier() {
 
         const selectedFeaturesData = {
             selectedFeatures,
-            selectedImage,
+            selectedImage: imageList[selectedImageIndex].name, // Отправляем имя файла
         };
 
         fetch('https://jsonplaceholder.typicode.com/', {
@@ -332,19 +336,34 @@ function Classifier() {
             <main>
                 <section className={styles.container}>
                     <div className={styles.imageSection}>
-                        <h2>Загрузите изображение:</h2>
+                        <h2>Список изображений:</h2>
+                        <ul className={styles.imagesList}>
+                            {imageList.map((image, index) => (
+                                <li
+                                    key={index}
+                                    onClick={() => handleImageChange(index)}
+                                    className={selectedImageIndex === index ? styles.selected : ''}
+                                >
+                                    {image.name}
+                                </li>
+                            ))}
+                        </ul>
                         <input
                             type="file"
                             accept="image/*"
-                            onChange={handleImageChange}
+                            multiple
+                            onChange={handleImageUpload}
                             className={styles.but}
                         />
+                    </div>
+
+                    <h2>Выбранное изображение:</h2>
+                    <div className={styles.selectedImage}>
                         {selectedImage && (
-                            <div className={styles.selectedImage}>
-                                <img src={selectedImage} alt="Selected Image" className={styles.melanoma} />
-                            </div>
+                            <img src={selectedImage} alt="Selected Image" className={styles.melanoma} />
                         )}
                     </div>
+
                     <div className={styles.featureSection}>
                         <h2>Выберите признаки по Киттлеру:</h2>
                         <FeatureSelector
@@ -360,7 +379,7 @@ function Classifier() {
                                     selected && (
                                         <li key={depth} className={styles.list}>
                                             {selected}
-                                            <button onClick={() => handleFeatureRemove(depth)} className={styles.but} >
+                                            <button onClick={() => handleFeatureRemove(depth)} className={styles.but}>
                                                 Удалить
                                             </button>
                                         </li>
@@ -373,12 +392,12 @@ function Classifier() {
                     <h2>Состояние запроса:</h2>
 
                     <ul className={styles.listContainer}>
-                        {alert && (
-                            <Alert message={alert.message} type={alert.type} />
-                        )}
+                        {alert && <Alert message={alert.message} type={alert.type} />}
                     </ul>
 
-                    <button onClick={sendSelectedFeaturesToServer} className={styles.but} >Отправить на сервер</button>
+                    <button onClick={sendSelectedFeaturesToServer} className={styles.but}>
+                        Отправить на сервер
+                    </button>
                 </section>
             </main>
         </Layout>

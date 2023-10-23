@@ -101,3 +101,19 @@ p {
     cursor: pointer;
 }
 
+.selected {
+    background-color: rgb(32, 178, 255);
+    color: white;
+    cursor: pointer;
+}
+
+.imageInList:hover {
+    background-color: rgb(32, 178, 255);
+    color: white;
+    cursor: pointer;
+}
+
+.imagesList{
+    list-style: none;
+}
+
