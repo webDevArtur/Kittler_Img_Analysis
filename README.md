@@ -29,6 +29,7 @@
 - HTML
 - CSS
 - JavaScript
+- React
 
 ## Автор
 
