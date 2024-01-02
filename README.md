@@ -7,6 +7,9 @@
 - Интерфейс для загрузки и отправки изображений на сервер.
 - Сохранение результатов анализа.
 
+![image](https://github.com/webDevArtur/Kittler_Img_Analysis/assets/141954990/d14c5b54-3562-4d3c-a3a6-dea0e2fa5ce5)
+
+
 ## Ссылка на проект
 
 Ссылка на страницу сайта, отвечающую за классификацию: https://webdevartur.github.io/Kittler_Img_Analysis
